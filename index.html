@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+ 
+  <body>
+    <form>
+      <label for="dropdown">Select a fruit:</label>
+	<select id="dropdown" name="drop">
+		<option value="">--Please choose an option--</option>
+	</select>
+      <input type="file" name="Files" required multiple />
+     
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+  <script>
+
+// Get the dropdown element
+const dropdown = document.getElementById('dropdown');
+
+// Loop through the fruits array and add options to the dropdown
+
+fetch('https://einstein-server.onrender.com/get_distinct_recipes')
+    .then(response => response.json())
+    .then(data => {
+      data.forEach(car => {
+        const option = document.createElement("option");
+        option.text = car.name;
+        option.value = car.name;
+        dropdown.add(option);
+      });
+    });
+    const formElem = document.querySelector('form');
+    formElem.addEventListener('submit', async (e) => {
+        console.log("form submitted")
+        console.log(formElem)
+      e.preventDefault();
+      await fetch('/upload', {
+        method: 'POST',
+        body: new FormData(formElem),
+      });
+    });
+  </script>
+</html>
